@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exam Topic Tracker - Platform Persiapan Ujian Sekolah</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #07090e;
+      --bg-surface: #0f172a;
+      --card-bg: rgba(15, 23, 42, 0.75);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --accent-glow: #6366f1;
+      --accent-hover: #4f46e5;
+      --ai-accent: #a855f7;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --wa-color: #25d366;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Background Aesthetic Glows */
+    .glow-bg {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+      z-index: -1;
+    }
+    .glow-1 { top: -100px; left: 50%; transform: translateX(-50%); width: 600px; height: 600px; background: rgba(99, 102, 241, 0.15); }
+    .glow-2 { top: 800px; right: -100px; width: 500px; height: 500px; background: rgba(168, 85, 247, 0.12); }
+    .glow-3 { top: 1600px; left: -100px; width: 500px; height: 500px; background: rgba(99, 102, 241, 0.1); }
+
+    /* Navigation Bar */
+    nav {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      background: rgba(7, 9, 14, 0.8);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--card-border);
+      z-index: 100;
+      padding: 1rem 2rem;
+    }
+    .nav-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .brand { font-size: 1.2rem; font-weight: 800; color: #fff; text-decoration: none; display: flex; align-items: center; gap: 8px; }
+    .brand-icon { width: 12px; height: 12px; background: var(--accent-glow); border-radius: 50%; box-shadow: 0 0 10px var(--accent-glow); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+    .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; font-weight: 600; transition: color 0.2s; }
+    .nav-links a:hover { color: #fff; }
+    .nav-btn {
+      background: var(--accent-glow);
+      color: #fff !important;
+      padding: 0.5rem 1rem;
+      border-radius: 10px;
+      transition: background 0.2s ease;
+    }
+    .nav-btn:hover { background: var(--accent-hover); }
+
+    /* Container Standard */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
+
+    /* Hero Section */
+    section.hero {
+      padding: 6rem 0 4rem 0;
+      text-align: center;
+      position: relative;
+    }
+    .badge {
+      background: rgba(99, 102, 241, 0.15);
+      color: #818cf8;
+      padding: 0.5rem 1.2rem;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      display: inline-block;
+      margin-bottom: 1.5rem;
+    }
+    h1 {
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 1.2rem;
+      background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    p.hero-desc {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      max-width: 680px;
+      margin: 0 auto 2.5rem auto;
+    }
+
+    /* Buttons */
+    .action-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 3.5rem; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.9rem 1.8rem;
+      border-radius: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.25s ease;
+      font-size: 0.95rem;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-primary {
+      background: var(--accent-glow);
+      color: white;
+      box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+    }
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(99, 102, 241, 0.6);
+    }
+    .btn-secondary {
+      background: var(--card-bg);
+      color: var(--text-main);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(12px);
+    }
+    .btn-secondary:hover { border-color: rgba(99, 102, 241, 0.5); transform: translateY(-2px); }
+    .badge-dev {
+      font-size: 0.68rem;
+      background: rgba(245, 158, 11, 0.2);
+      color: #fbbf24;
+      padding: 2px 8px;
+      border-radius: 8px;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      margin-left: 4px;
+    }
+
+    /* Section Common */
+    section { padding: 5rem 0; }
+    .section-title { text-align: center; margin-bottom: 3.5rem; }
+    .section-title h2 { font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; }
+    .section-title p { color: var(--text-muted); font-size: 1rem; }
+
+    /* Main Features Grid */
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.8rem; }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 2rem;
+      backdrop-filter: blur(12px);
+      transition: all 0.3s ease;
+    }
+    .card:hover { border-color: rgba(99, 102, 241, 0.4); transform: translateY(-5px); }
+    .card-icon {
+      font-size: 2rem;
+      margin-bottom: 1.2rem;
+      background: rgba(255, 255, 255, 0.05);
+      width: 55px; height: 55px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 14px;
+    }
+    .card h3 { font-size: 1.2rem; margin-bottom: 0.6rem; color: #fff; }
+    .card p { color: var(--text-muted); font-size: 0.92rem; line-height: 1.6; }
+
+    /* AI Section Special (Under Development Alert) */
+    .ai-banner {
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(30, 27, 75, 0.6));
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      border-radius: 24px;
+      padding: 3rem 2rem;
+      position: relative;
+      overflow: hidden;
+      margin-top: 2rem;
+    }
+    .ai-badge {
+      background: rgba(168, 85, 247, 0.2);
+      color: #c084fc;
+      border: 1px solid rgba(168, 85, 247, 0.4);
+      padding: 0.4rem 1rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 1.2rem;
+    }
+    .ai-content { max-width: 700px; margin: 0 auto; text-align: center; }
+    .ai-content h3 { font-size: 1.8rem; font-weight: 800; margin-bottom: 1rem; color: #fff; }
+    .ai-content p { color: var(--text-muted); font-size: 0.98rem; margin-bottom: 1.8rem; }
+    .dev-status-box {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 16px;
+      padding: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      text-align: left;
+      border: 1px dashed rgba(168, 85, 247, 0.4);
+    }
+    .dev-status-icon { font-size: 1.8rem; }
+    .dev-status-text h4 { font-size: 0.95rem; color: #f1f5f9; margin-bottom: 0.2rem; }
+    .dev-status-text p { font-size: 0.85rem; color: var(--text-muted); margin: 0; }
+
+    /* Workflow / How it Works */
+    .workflow-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; text-align: center; }
+    .step-number {
+      width: 40px; height: 40px;
+      background: rgba(99, 102, 241, 0.2);
+      color: #818cf8;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; margin: 0 auto 1rem auto;
+      border: 1px solid rgba(99, 102, 241, 0.4);
+    }
+
+    /* Founder Profile Section */
+    .founder-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 2.5rem;
+      backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .founder-avatar {
+      width: 90px; height: 90px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent-glow), var(--ai-accent));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.2rem; font-weight: 800; color: white;
+      box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+      flex-shrink: 0;
+    }
+    .founder-details { flex: 1; }
+    .founder-details h3 { font-size: 1.4rem; color: #fff; margin-bottom: 0.2rem; }
+    .founder-role { font-size: 0.88rem; color: #818cf8; font-weight: 700; margin-bottom: 0.8rem; }
+    .founder-bio { font-size: 0.93rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.2rem; }
+    .btn-wa {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      background: rgba(37, 211, 102, 0.15); color: #4ade80;
+      border: 1px solid rgba(37, 211, 102, 0.3);
+      padding: 0.6rem 1.2rem; border-radius: 12px;
+      font-size: 0.88rem; font-weight: 700; text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-wa:hover { background: var(--wa-color); color: white; }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--card-border);
+      padding: 2.5rem 0;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.88rem;
+    }
+
+    /* Toast Notification */
+    #toast {
+      visibility: hidden;
+      min-width: 280px;
+      background-color: #1e293b;
+      color: #fff;
+      text-align: center;
+      border-radius: 12px;
+      padding: 14px 20px;
+      position: fixed;
+      z-index: 999;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 1px solid rgba(99, 102, 241, 0.4);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      font-size: 0.9rem;
+      font-weight: 600;
+      opacity: 0;
+      transition: opacity 0.3s, bottom 0.3s;
+    }
+    #toast.show { visibility: visible; opacity: 1; bottom: 40px; }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .founder-card { text-align: center; justify-content: center; }
+      .founder-avatar { margin: 0 auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="glow-bg glow-1"></div>
+  <div class="glow-bg glow-2"></div>
+  <div class="glow-bg glow-3"></div>
+
+  <!-- Navigation Bar -->
+  <nav>
+    <div class="nav-container">
+      <a href="#" class="brand">
+        <div class="brand-icon"></div>
+        Exam Topic Tracker
+      </a>
+      <ul class="nav-links">
+        <li><a href="#fitur">Fitur Utama</a></li>
+        <li><a href="#ai-assistant">Gemini AI</a></li>
+        <li><a href="#cara-kerja">Cara Kerja</a></li>
+        <li><a href="#founder">Developer</a></li>
+        <li><a href="https://r00p1nder-s1ngh.github.io/Exam-Topic-Tracker-V2/" class="nav-btn">Buka Web App</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <span class="badge">✨ Platform Persiapan Ujian Sekolah Modern</span>
+      <h1>Kuasai Setiap Bab Ujian<br>Tanpa Kebingungan</h1>
+      <p class="hero-desc">Organisasi topik pelajaran, pantau persentase penguasaan materi secara visual, dan optimalkan strategi belajar ujianmu dalam satu aplikasi terpadu.</p>
+      
+      <div class="action-buttons">
+        <a href="https://r00p1nder-s1ngh.github.io/Exam-Topic-Tracker-V2/" class="btn btn-primary">
+          <span>🌐</span> Buka Web App
+        </a>
+        <button onclick="showNotice('Android APK')" class="btn btn-secondary">
+          <span>🤖</span> Download APK <span class="badge-dev">Segera</span>
+        </button>
+        <button onclick="showNotice('iOS IPA')" class="btn btn-secondary">
+          <span>🍎</span> Download IPA <span class="badge-dev">Segera</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Fitur Utama -->
+  <section id="fitur">
+    <div class="container">
+      <div class="section-title">
+        <h2>Fitur Utama Platform</h2>
+        <p>Dirancang untuk mempermudah manajemen materi pelajaran SMA</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-icon">📊</div>
+          <h3>Visual Progress Tracking</h3>
+          <p>Geser slider untuk mencatat sejauh mana kamu memahami bab tertentu (0% – 100%). Dapatkan gambaran kesiapan ujian secara instan.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-icon">🗂️</div>
+          <h3>Pengelompokan Bab & Topik</h3>
+          <p>Susun daftar materi ujian berdasarkan mata pelajaran seperti Fisika, Biologi, Matematika, hingga Sejarah dengan rapi.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-icon">💾</div>
+          <h3>Penyimpanan Lokal Aman</h3>
+          <p>Data persiapan ujian milikmu tersimpan langsung di browser (LocalStorage), aman, privasi terjaga, dan cepat diakses kapan saja.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Special Section: Gemini AI Assistant Status -->
+  <section id="ai-assistant">
+    <div class="container">
+      <div class="ai-banner">
+        <div class="ai-content">
+          <div class="ai-badge">
+            <span>✨</span> Gemini AI Assistant
+          </div>
+          <h3>Asisten Belajar Cerdas Terintegrasi</h3>
+          <p>Fitur AI untuk membantu menjelaskan konsep materi rumit serta pembuat kuis latihan otomatis sedang dikembangkan secara intensif menggunakan teknologi Google Gemini API.</p>
+          
+          <div class="dev-status-box">
+            <div class="dev-status-icon">🚧</div>
+            <div class="dev-status-text">
+              <h4>Status Fitur AI: Dalam Tahap Pengembangan (In Development)</h4>
+              <p>Modul AI sudah diintegrasikan ke dalam antarmuka aplikasi dan sedang dalam proses penyempurnaan kestabilan koneksi serta respon sistem.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cara Kerja / Workflow -->
+  <section id="cara-kerja">
+    <div class="container">
+      <div class="section-title">
+        <h2>Alur Penggunaan Aplikasi</h2>
+        <p>4 Langkah mudah memulai persiapan ujian sekolahmu</p>
+      </div>
+
+      <div class="workflow-steps">
+        <div class="card">
+          <div class="step-number">1</div>
+          <h3>Buka Web App</h3>
+          <p>Akses aplikasi secara gratis melalui tombol di landing page ini tanpa perlu mendaftar akun rumit.</p>
+        </div>
+
+        <div class="card">
+          <div class="step-number">2</div>
+          <h3>Input Daftar Topik</h3>
+          <p>Masukkan judul mata pelajaran beserta bab-bab yang akan diujikan di sekolahmu.</p>
+        </div>
+
+        <div class="card">
+          <div class="step-number">3</div>
+          <h3>Update Progres</h3>
+          <p>Setiap kali selesai mengulang pelajaran, perbarui indikator penguasaan materi.</p>
+        </div>
+
+        <div class="card">
+          <div class="step-number">4</div>
+          <h3>Siap Ujian!</h3>
+          <p>Fokus pada bab yang persentase penguasaannya masih rendah hingga semuanya siap 100%.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Founder Profile Section -->
+  <section id="founder">
+    <div class="container">
+      <div class="founder-card">
+        <div class="founder-avatar">RS</div>
+        <div class="founder-details">
+          <h3>Roopinder Singh</h3>
+          <div class="founder-role">Founder & Developer</div>
+          <p class="founder-bio">
+            Saya adalah siswa kelas 10 di <b>SMA Harapan Mandiri Medan</b> (berumur 15 tahun). Aplikasi web dan landing page ini dirancang serta dibangun dengan bantuan teknologi <b>Google Gemini AI</b> sebagai asisten pemrograman untuk membantu sesama teman pelajar mengelola persiapan ujian mereka.
+          </p>
+          <a href="https://wa.me/6282371543358" target="_blank" class="btn-wa">
+            <span>💬</span> Hubungi via WhatsApp (+62 823-7154-3358)
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Exam Topic Tracker • Dikembangkan menggunakan Bantuan Teknologi AI (Google Gemini)</p>
+    </div>
+  </footer>
+
+  <!-- Toast Notification -->
+  <div id="toast">Aplikasi sedang disiapkan...</div>
+
+  <script>
+    function showNotice(platform) {
+      const toast = document.getElementById("toast");
+      toast.innerText = "📦 File installer " + platform + " sedang dalam proses pembuatan!";
+      toast.className = "show";
+      setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3500);
+    }
+  </script>
+
+</body>
+</html>
