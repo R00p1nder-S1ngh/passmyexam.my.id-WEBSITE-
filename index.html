@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<!-- Favicon Web & Apple Icon -->
-<link rel="icon" type="image/png" href="logo-circle.png">
-<link rel="apple-touch-icon" href="logo-circle.png">
+  <!-- Favicon Web & Apple Icon -->
+  <link rel="icon" type="image/png" href="logo-circle.png">
+  <link rel="apple-touch-icon" href="logo-circle.png">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Exam Topic Tracker - Platform Persiapan Ujian Sekolah</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
+      /* Dark Theme (Default) */
       --bg-dark: #07090e;
       --bg-surface: #0f172a;
       --card-bg: rgba(15, 23, 42, 0.75);
@@ -20,6 +21,28 @@
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
       --wa-color: #25d366;
+      --nav-bg: rgba(7, 9, 14, 0.8);
+      --heading-grad-start: #ffffff;
+      --heading-grad-end: #cbd5e1;
+      --showcase-shadow: rgba(0, 0, 0, 0.5);
+    }
+
+    [data-theme="light"] {
+      /* Light Theme */
+      --bg-dark: #f8fafc;
+      --bg-surface: #ffffff;
+      --card-bg: rgba(255, 255, 255, 0.85);
+      --card-border: rgba(0, 0, 0, 0.08);
+      --accent-glow: #4f46e5;
+      --accent-hover: #4338ca;
+      --ai-accent: #9333ea;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --wa-color: #16a34a;
+      --nav-bg: rgba(248, 250, 252, 0.85);
+      --heading-grad-start: #0f172a;
+      --heading-grad-end: #334155;
+      --showcase-shadow: rgba(99, 102, 241, 0.15);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; scroll-behavior: smooth; }
@@ -29,6 +52,7 @@
       color: var(--text-main);
       line-height: 1.6;
       overflow-x: hidden;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     /* Background Aesthetic Glows */
@@ -48,11 +72,12 @@
       position: sticky;
       top: 0;
       width: 100%;
-      background: rgba(7, 9, 14, 0.8);
+      background: var(--nav-bg);
       backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--card-border);
       z-index: 100;
       padding: 1rem 2rem;
+      transition: background 0.3s ease, border-color 0.3s ease;
     }
     .nav-container {
       max-width: 1100px;
@@ -61,11 +86,11 @@
       justify-content: space-between;
       align-items: center;
     }
-    .brand { font-size: 1.2rem; font-weight: 800; color: #fff; text-decoration: none; display: flex; align-items: center; gap: 8px; }
+    .brand { font-size: 1.2rem; font-weight: 800; color: var(--text-main); text-decoration: none; display: flex; align-items: center; gap: 8px; }
     .brand-icon { width: 12px; height: 12px; background: var(--accent-glow); border-radius: 50%; box-shadow: 0 0 10px var(--accent-glow); }
-    .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+    .nav-links { display: flex; gap: 1.5rem; list-style: none; align-items: center; }
     .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; font-weight: 600; transition: color 0.2s; }
-    .nav-links a:hover { color: #fff; }
+    .nav-links a:hover { color: var(--text-main); }
     .nav-btn {
       background: var(--accent-glow);
       color: #fff !important;
@@ -75,12 +100,31 @@
     }
     .nav-btn:hover { background: var(--accent-hover); }
 
+    /* Theme Toggle Button */
+    .theme-toggle {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      border-radius: 10px;
+      padding: 0.45rem 0.8rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+    .theme-toggle:hover {
+      border-color: var(--accent-glow);
+    }
+
     /* Container Standard */
     .container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
 
     /* Hero Section */
     section.hero {
-      padding: 6rem 0 4rem 0;
+      padding: 6rem 0 3rem 0;
       text-align: center;
       position: relative;
     }
@@ -100,7 +144,7 @@
       font-weight: 800;
       line-height: 1.15;
       margin-bottom: 1.2rem;
-      background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%);
+      background: linear-gradient(180deg, var(--heading-grad-start) 0%, var(--heading-grad-end) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
@@ -112,7 +156,7 @@
     }
 
     /* Buttons */
-    .action-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 3.5rem; }
+    .action-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem; }
     .btn {
       display: inline-flex;
       align-items: center;
@@ -154,10 +198,30 @@
     }
 
     /* Section Common */
-    section { padding: 5rem 0; }
+    section { padding: 4.5rem 0; }
     .section-title { text-align: center; margin-bottom: 3.5rem; }
-    .section-title h2 { font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; }
+    .section-title h2 { font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; color: var(--text-main); }
     .section-title p { color: var(--text-muted); font-size: 1rem; }
+
+    /* Photo Showcase Section */
+    .showcase-wrapper {
+      max-width: 980px;
+      margin: 0 auto;
+      border-radius: 20px;
+      padding: 8px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      box-shadow: 0 20px 50px var(--showcase-shadow);
+      transition: all 0.3s ease;
+    }
+    .showcase-img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 14px;
+      object-fit: cover;
+      transition: opacity 0.3s ease;
+    }
 
     /* Main Features Grid */
     .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.8rem; }
@@ -178,12 +242,12 @@
       display: flex; align-items: center; justify-content: center;
       border-radius: 14px;
     }
-    .card h3 { font-size: 1.2rem; margin-bottom: 0.6rem; color: #fff; }
+    .card h3 { font-size: 1.2rem; margin-bottom: 0.6rem; color: var(--text-main); }
     .card p { color: var(--text-muted); font-size: 0.92rem; line-height: 1.6; }
 
-    /* AI Section Special (Under Development Alert) */
+    /* AI Section Special */
     .ai-banner {
-      background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(30, 27, 75, 0.6));
+      background: linear-gradient(135deg, var(--card-bg), var(--card-bg));
       border: 1px solid rgba(168, 85, 247, 0.3);
       border-radius: 24px;
       padding: 3rem 2rem;
@@ -193,7 +257,7 @@
     }
     .ai-badge {
       background: rgba(168, 85, 247, 0.2);
-      color: #c084fc;
+      color: var(--ai-accent);
       border: 1px solid rgba(168, 85, 247, 0.4);
       padding: 0.4rem 1rem;
       border-radius: 20px;
@@ -205,10 +269,10 @@
       margin-bottom: 1.2rem;
     }
     .ai-content { max-width: 700px; margin: 0 auto; text-align: center; }
-    .ai-content h3 { font-size: 1.8rem; font-weight: 800; margin-bottom: 1rem; color: #fff; }
+    .ai-content h3 { font-size: 1.8rem; font-weight: 800; margin-bottom: 1rem; color: var(--text-main); }
     .ai-content p { color: var(--text-muted); font-size: 0.98rem; margin-bottom: 1.8rem; }
     .dev-status-box {
-      background: rgba(0, 0, 0, 0.3);
+      background: rgba(0, 0, 0, 0.15);
       border-radius: 16px;
       padding: 1.2rem;
       display: flex;
@@ -218,7 +282,7 @@
       border: 1px dashed rgba(168, 85, 247, 0.4);
     }
     .dev-status-icon { font-size: 1.8rem; }
-    .dev-status-text h4 { font-size: 0.95rem; color: #f1f5f9; margin-bottom: 0.2rem; }
+    .dev-status-text h4 { font-size: 0.95rem; color: var(--text-main); margin-bottom: 0.2rem; }
     .dev-status-text p { font-size: 0.85rem; color: var(--text-muted); margin: 0; }
 
     /* Workflow / How it Works */
@@ -255,12 +319,12 @@
       flex-shrink: 0;
     }
     .founder-details { flex: 1; }
-    .founder-details h3 { font-size: 1.4rem; color: #fff; margin-bottom: 0.2rem; }
+    .founder-details h3 { font-size: 1.4rem; color: var(--text-main); margin-bottom: 0.2rem; }
     .founder-role { font-size: 0.88rem; color: #818cf8; font-weight: 700; margin-bottom: 0.8rem; }
     .founder-bio { font-size: 0.93rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.2rem; }
     .btn-wa {
       display: inline-flex; align-items: center; gap: 0.6rem;
-      background: rgba(37, 211, 102, 0.15); color: #4ade80;
+      background: rgba(37, 211, 102, 0.15); color: var(--wa-color);
       border: 1px solid rgba(37, 211, 102, 0.3);
       padding: 0.6rem 1.2rem; border-radius: 12px;
       font-size: 0.88rem; font-weight: 700; text-decoration: none;
@@ -281,8 +345,8 @@
     #toast {
       visibility: hidden;
       min-width: 280px;
-      background-color: #1e293b;
-      color: #fff;
+      background-color: var(--bg-surface);
+      color: var(--text-main);
       text-align: center;
       border-radius: 12px;
       padding: 14px 20px;
@@ -291,8 +355,8 @@
       bottom: 30px;
       left: 50%;
       transform: translateX(-50%);
-      border: 1px solid rgba(99, 102, 241, 0.4);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      border: 1px solid var(--accent-glow);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
       font-size: 0.9rem;
       font-weight: 600;
       opacity: 0;
@@ -321,10 +385,16 @@
         Exam Topic Tracker
       </a>
       <ul class="nav-links">
+        <li><a href="#showcase">Preview</a></li>
         <li><a href="#fitur">Fitur Utama</a></li>
         <li><a href="#ai-assistant">Gemini AI</a></li>
         <li><a href="#cara-kerja">Cara Kerja</a></li>
         <li><a href="#founder">Developer</a></li>
+        <li>
+          <button class="theme-toggle" id="themeToggleBtn" onclick="toggleTheme()">
+            <span id="themeIcon">🌙</span> <span id="themeText">Dark</span>
+          </button>
+        </li>
         <li><a href="https://r00p1nder-s1ngh.github.io/Exam-Topic-Tracker-V2/" class="nav-btn">Buka Web App</a></li>
       </ul>
     </div>
@@ -347,6 +417,20 @@
         <button onclick="showNotice('iOS IPA')" class="btn btn-secondary">
           <span>🍎</span> Download IPA <span class="badge-dev">Segera</span>
         </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Photo Preview Showcase Section -->
+  <section id="showcase">
+    <div class="container">
+      <div class="section-title">
+        <h2>Tampilan Antarmuka Aplikasi</h2>
+        <p>Gunakan toggle mode terang/gelap di kanan atas untuk melihat fleksibilitas tema aplikasi</p>
+      </div>
+
+      <div class="showcase-wrapper">
+        <img id="showcaseImg" src="dark-mode.png" alt="Exam Topic Tracker Showcase Preview" class="showcase-img">
       </div>
     </div>
   </section>
@@ -470,12 +554,43 @@
   <div id="toast">Aplikasi sedang disiapkan...</div>
 
   <script>
+    // Toast Notification Script
     function showNotice(platform) {
       const toast = document.getElementById("toast");
       toast.innerText = "📦 File installer " + platform + " sedang dalam proses pembuatan!";
       toast.className = "show";
       setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3500);
     }
+
+    // Theme Toggle & Showcase Image Switcher
+    function applyTheme(theme) {
+      const showcaseImg = document.getElementById('showcaseImg');
+
+      if (theme === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+        document.getElementById('themeIcon').innerText = '☀️';
+        document.getElementById('themeText').innerText = 'Light';
+        if (showcaseImg) showcaseImg.src = 'light-mode.png';
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+        document.getElementById('themeIcon').innerText = '🌙';
+        document.getElementById('themeText').innerText = 'Dark';
+        if (showcaseImg) showcaseImg.src = 'dark-mode.png';
+      }
+    }
+
+    function toggleTheme() {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      localStorage.setItem('theme', newTheme);
+      applyTheme(newTheme);
+    }
+
+    // Load saved theme on page load
+    (function initTheme() {
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      applyTheme(savedTheme);
+    })();
   </script>
 
 </body>
