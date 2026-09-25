@@ -21,7 +21,7 @@
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
       --wa-color: #25d366;
-      --nav-bg: rgba(7, 9, 14, 0.8);
+      --nav-bg: rgba(7, 9, 14, 0.85);
       --heading-grad-start: #ffffff;
       --heading-grad-end: #cbd5e1;
       --showcase-shadow: rgba(0, 0, 0, 0.5);
@@ -89,16 +89,42 @@
     .brand { font-size: 1.2rem; font-weight: 800; color: var(--text-main); text-decoration: none; display: flex; align-items: center; gap: 8px; }
     .brand-icon { width: 12px; height: 12px; background: var(--accent-glow); border-radius: 50%; box-shadow: 0 0 10px var(--accent-glow); }
     .nav-links { display: flex; gap: 1.5rem; list-style: none; align-items: center; }
-    .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; font-weight: 600; transition: color 0.2s; }
-    .nav-links a:hover { color: var(--text-main); }
+    
+    /* Active State Indicator */
+    .nav-links a { 
+      color: var(--text-muted); 
+      text-decoration: none; 
+      font-size: 0.9rem; 
+      font-weight: 600; 
+      transition: all 0.2s ease;
+      position: relative;
+      padding: 0.2rem 0;
+    }
+    .nav-links a:hover,
+    .nav-links a.active { 
+      color: var(--text-main); 
+    }
+    .nav-links a.active::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--accent-glow);
+      border-radius: 2px;
+      box-shadow: 0 0 8px var(--accent-glow);
+    }
+
     .nav-btn {
       background: var(--accent-glow);
       color: #fff !important;
-      padding: 0.5rem 1rem;
+      padding: 0.5rem 1rem !important;
       border-radius: 10px;
       transition: background 0.2s ease;
     }
     .nav-btn:hover { background: var(--accent-hover); }
+    .nav-btn.active::after { display: none; }
 
     /* Theme Toggle Button */
     .theme-toggle {
@@ -115,16 +141,14 @@
       font-weight: 600;
       transition: all 0.2s ease;
     }
-    .theme-toggle:hover {
-      border-color: var(--accent-glow);
-    }
+    .theme-toggle:hover { border-color: var(--accent-glow); }
 
     /* Container Standard */
     .container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
 
     /* Hero Section */
     section.hero {
-      padding: 6rem 0 3rem 0;
+      padding: 6.5rem 0 4rem 0;
       text-align: center;
       position: relative;
     }
@@ -197,13 +221,12 @@
       margin-left: 4px;
     }
 
-    /* Section Common */
-    section { padding: 4.5rem 0; }
+    section { padding: 6rem 0; }
     .section-title { text-align: center; margin-bottom: 3.5rem; }
     .section-title h2 { font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; color: var(--text-main); }
     .section-title p { color: var(--text-muted); font-size: 1rem; }
 
-    /* Photo Showcase Section */
+    /* Showcase Section */
     .showcase-wrapper {
       max-width: 980px;
       margin: 0 auto;
@@ -213,6 +236,7 @@
       border: 1px solid var(--card-border);
       box-shadow: 0 20px 50px var(--showcase-shadow);
       transition: all 0.3s ease;
+      position: relative;
     }
     .showcase-img {
       width: 100%;
@@ -221,6 +245,29 @@
       border-radius: 14px;
       object-fit: cover;
       transition: opacity 0.3s ease;
+    }
+    .showcase-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1.5rem;
+      padding: 0 0.5rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .showcase-tag {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      background: #22c55e;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #22c55e;
     }
 
     /* Main Features Grid */
@@ -245,15 +292,14 @@
     .card h3 { font-size: 1.2rem; margin-bottom: 0.6rem; color: var(--text-main); }
     .card p { color: var(--text-muted); font-size: 0.92rem; line-height: 1.6; }
 
-    /* AI Section Special */
+    /* AI Section */
     .ai-banner {
       background: linear-gradient(135deg, var(--card-bg), var(--card-bg));
       border: 1px solid rgba(168, 85, 247, 0.3);
       border-radius: 24px;
-      padding: 3rem 2rem;
+      padding: 3.5rem 2rem;
       position: relative;
       overflow: hidden;
-      margin-top: 2rem;
     }
     .ai-badge {
       background: rgba(168, 85, 247, 0.2);
@@ -285,7 +331,7 @@
     .dev-status-text h4 { font-size: 0.95rem; color: var(--text-main); margin-bottom: 0.2rem; }
     .dev-status-text p { font-size: 0.85rem; color: var(--text-muted); margin: 0; }
 
-    /* Workflow / How it Works */
+    /* Workflow */
     .workflow-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; text-align: center; }
     .step-number {
       width: 40px; height: 40px;
@@ -364,10 +410,36 @@
     }
     #toast.show { visibility: visible; opacity: 1; bottom: 40px; }
 
+    /* Mobile Menu Toggle Button */
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text-main);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
     @media (max-width: 768px) {
-      .nav-links { display: none; }
+      .menu-toggle { display: block; }
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: var(--nav-bg);
+        backdrop-filter: blur(20px);
+        flex-direction: column;
+        padding: 1.5rem;
+        border-bottom: 1px solid var(--card-border);
+        gap: 1.2rem;
+      }
+      .nav-links.show { display: flex; }
       .founder-card { text-align: center; justify-content: center; }
       .founder-avatar { margin: 0 auto; }
+      .showcase-footer { justify-content: center; text-align: center; }
+      section { padding: 4rem 0; }
     }
   </style>
 </head>
@@ -384,12 +456,13 @@
         <div class="brand-icon"></div>
         Exam Topic Tracker
       </a>
-      <ul class="nav-links">
-        <li><a href="#showcase">Preview</a></li>
-        <li><a href="#fitur">Fitur Utama</a></li>
-        <li><a href="#ai-assistant">Gemini AI</a></li>
-        <li><a href="#cara-kerja">Cara Kerja</a></li>
-        <li><a href="#founder">Developer</a></li>
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">☰</button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#showcase" class="nav-item">Preview</a></li>
+        <li><a href="#fitur" class="nav-item">Fitur Utama</a></li>
+        <li><a href="#ai-assistant" class="nav-item">Gemini AI</a></li>
+        <li><a href="#cara-kerja" class="nav-item">Cara Kerja</a></li>
+        <li><a href="#founder" class="nav-item">Developer</a></li>
         <li>
           <button class="theme-toggle" id="themeToggleBtn" onclick="toggleTheme()">
             <span id="themeIcon">🌙</span> <span id="themeText">Dark</span>
@@ -401,7 +474,7 @@
   </nav>
 
   <!-- Hero Section -->
-  <section class="hero">
+  <section class="hero" id="hero">
     <div class="container">
       <span class="badge">✨ Platform Persiapan Ujian Sekolah Modern</span>
       <h1>Kuasai Setiap Bab Ujian<br>Tanpa Kebingungan</h1>
@@ -431,6 +504,16 @@
 
       <div class="showcase-wrapper">
         <img id="showcaseImg" src="dark-mode.png" alt="Exam Topic Tracker Showcase Preview" class="showcase-img">
+      </div>
+
+      <div class="showcase-footer">
+        <div class="showcase-tag">
+          <span class="live-dot"></span>
+          <span>Antarmuka Web App V2 Real-time</span>
+        </div>
+        <a href="https://r00p1nder-s1ngh.github.io/Exam-Topic-Tracker-V2/" class="btn btn-secondary" style="padding: 0.6rem 1.2rem; font-size: 0.88rem;">
+          ⚡ Coba Demo Interaktif Langsung
+        </a>
       </div>
     </div>
   </section>
@@ -554,7 +637,6 @@
   <div id="toast">Aplikasi sedang disiapkan...</div>
 
   <script>
-    // Toast Notification Script
     function showNotice(platform) {
       const toast = document.getElementById("toast");
       toast.innerText = "📦 File installer " + platform + " sedang dalam proses pembuatan!";
@@ -562,7 +644,6 @@
       setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3500);
     }
 
-    // Theme Toggle & Showcase Image Switcher
     function applyTheme(theme) {
       const showcaseImg = document.getElementById('showcaseImg');
 
@@ -586,11 +667,82 @@
       applyTheme(newTheme);
     }
 
-    // Load saved theme on page load
     (function initTheme() {
       const savedTheme = localStorage.getItem('theme') || 'dark';
       applyTheme(savedTheme);
     })();
+
+    // ==========================================
+    // LOGIKA NAVIGASI DENGAN DEBOUNCE / LOCK
+    // ==========================================
+    const navItems = document.querySelectorAll(".nav-item");
+    const menuToggle = document.getElementById("menuToggle");
+    const navLinks = document.getElementById("navLinks");
+    let isClickScrolling = false; // Flag status klik
+
+    function setActiveLink(id) {
+      navItems.forEach((item) => {
+        item.classList.remove("active");
+        if (item.getAttribute("href") === "#" + id) {
+          item.classList.add("active");
+        }
+      });
+    }
+
+    // IntersectionObserver untuk Scroll Manual biasa
+    const sections = document.querySelectorAll("section");
+    const observerOptions = {
+      root: null,
+      rootMargin: "-20% 0px -50% 0px",
+      threshold: 0
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      // Jika halaman sedang otomatis ter-scroll karena diklik, abaikan observer
+      if (isClickScrolling) return;
+
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveLink(entry.target.id);
+        }
+      });
+    }, observerOptions);
+
+    sections.forEach((section) => observer.observe(section));
+
+    // Deteksi khusus jika layar di-scroll manual sampai paling bawah
+    window.addEventListener("scroll", () => {
+      if (isClickScrolling) return;
+      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 50) {
+        setActiveLink("founder");
+      }
+    });
+
+    // Menangani Event Klik Navigasi (Mengunci Indicator)
+    navItems.forEach((item) => {
+      item.addEventListener("click", (e) => {
+        const targetId = item.getAttribute("href").replace("#", "");
+        
+        // Langsung pindahkan indikator ke item yang baru saja diklik
+        setActiveLink(targetId);
+        
+        // Kunci pemicu observer selama durasi smooth scroll
+        isClickScrolling = true;
+        
+        // Lepas kunci setelah smooth scroll selesai
+        setTimeout(() => {
+          isClickScrolling = false;
+        }, 800);
+
+        if (navLinks.classList.contains("show")) {
+          navLinks.classList.remove("show");
+        }
+      });
+    });
+
+    menuToggle.addEventListener("click", () => {
+      navLinks.classList.toggle("show");
+    });
   </script>
 
 </body>
