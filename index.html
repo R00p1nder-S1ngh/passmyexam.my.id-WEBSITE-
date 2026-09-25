@@ -25,6 +25,13 @@
       --heading-grad-start: #ffffff;
       --heading-grad-end: #cbd5e1;
       --showcase-shadow: rgba(0, 0, 0, 0.5);
+
+      /* STREAK COLOR & EMOJI FILTER (Dark Mode: Biru Glow) */
+      --streak-color: #3b82f6;
+      --streak-bg: rgba(59, 130, 246, 0.12);
+      --streak-border: rgba(59, 130, 246, 0.35);
+      --streak-glow: rgba(59, 130, 246, 0.4);
+      --streak-emoji-filter: drop-shadow(0 0 8px #3b82f6) hue-rotate(190deg);
     }
 
     [data-theme="light"] {
@@ -43,6 +50,13 @@
       --heading-grad-start: #0f172a;
       --heading-grad-end: #334155;
       --showcase-shadow: rgba(99, 102, 241, 0.15);
+
+      /* STREAK COLOR & EMOJI FILTER (Light Mode: Merah/Oranye Api Alami) */
+      --streak-color: #ef4444;
+      --streak-bg: rgba(239, 68, 68, 0.08);
+      --streak-border: rgba(239, 68, 68, 0.3);
+      --streak-glow: rgba(239, 68, 68, 0.3);
+      --streak-emoji-filter: none;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; scroll-behavior: smooth; }
@@ -270,15 +284,23 @@
       box-shadow: 0 0 8px #22c55e;
     }
 
-    /* Main Features Grid */
-    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.8rem; }
+    /* Main Features Grid (Layout 4 Kolom Sejajar) */
+    .grid-4 { 
+      display: grid; 
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); 
+      gap: 1.5rem; 
+    }
+    
     .card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: 20px;
-      padding: 2rem;
+      padding: 1.8rem 1.5rem;
       backdrop-filter: blur(12px);
       transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
     }
     .card:hover { border-color: rgba(99, 102, 241, 0.4); transform: translateY(-5px); }
     .card-icon {
@@ -289,8 +311,50 @@
       display: flex; align-items: center; justify-content: center;
       border-radius: 14px;
     }
-    .card h3 { font-size: 1.2rem; margin-bottom: 0.6rem; color: var(--text-main); }
-    .card p { color: var(--text-muted); font-size: 0.92rem; line-height: 1.6; }
+    .card h3 { font-size: 1.1rem; margin-bottom: 0.6rem; color: var(--text-main); }
+    .card p { color: var(--text-muted); font-size: 0.88rem; line-height: 1.6; }
+
+    /* STREAK EXPLANATION CARD & EMOJI GLOW */
+    .card-streak {
+      background: var(--streak-bg);
+      border: 1px solid var(--streak-border);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    .card-streak:hover {
+      box-shadow: 0 10px 30px var(--streak-glow);
+      border-color: var(--streak-color);
+      transform: translateY(-5px);
+    }
+    .card-streak .card-icon {
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 15px var(--streak-glow);
+    }
+    .streak-emoji {
+      display: inline-block;
+      filter: var(--streak-emoji-filter);
+      transition: filter 0.3s ease;
+    }
+    .streak-highlight {
+      color: var(--streak-color);
+      font-weight: 800;
+      transition: color 0.3s ease;
+    }
+    .streak-badge {
+      display: inline-block;
+      margin-top: auto;
+      padding: 0.35rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--streak-color);
+      border: 1px solid var(--streak-border);
+      transition: all 0.3s ease;
+      text-align: center;
+      margin-top: 1rem;
+    }
 
     /* AI Section */
     .ai-banner {
@@ -518,7 +582,7 @@
     </div>
   </section>
 
-  <!-- Fitur Utama -->
+  <!-- Fitur Utama (4 Kolom) -->
   <section id="fitur">
     <div class="container">
       <div class="section-title">
@@ -526,19 +590,30 @@
         <p>Dirancang untuk mempermudah manajemen materi pelajaran SMA</p>
       </div>
 
-      <div class="grid-3">
+      <div class="grid-4">
+        <!-- 1. Visual Progress Tracking -->
         <div class="card">
           <div class="card-icon">📊</div>
           <h3>Visual Progress Tracking</h3>
           <p>Geser slider untuk mencatat sejauh mana kamu memahami bab tertentu (0% – 100%). Dapatkan gambaran kesiapan ujian secara instan.</p>
         </div>
 
+        <!-- 2. Sistem Study Streak -->
+        <div class="card card-streak">
+          <div class="card-icon"><span class="streak-emoji">🔥</span></div>
+          <h3>Sistem Study Streak</h3>
+          <p>Pertahankan konsistensi belajarmu! Angka <span class="streak-highlight">Streak bertambah</span> jika kamu belajar minimal <span class="streak-highlight">25 menit / hari</span>.</p>
+          <div class="streak-badge">⚡ Target: 25 Menit Belajar Rutin</div>
+        </div>
+
+        <!-- 3. Pengelompokan Bab & Topik -->
         <div class="card">
           <div class="card-icon">🗂️</div>
           <h3>Pengelompokan Bab & Topik</h3>
           <p>Susun daftar materi ujian berdasarkan mata pelajaran seperti Fisika, Biologi, Matematika, hingga Sejarah dengan rapi.</p>
         </div>
 
+        <!-- 4. Penyimpanan Lokal Aman -->
         <div class="card">
           <div class="card-icon">💾</div>
           <h3>Penyimpanan Lokal Aman</h3>
@@ -672,13 +747,11 @@
       applyTheme(savedTheme);
     })();
 
-    // ==========================================
-    // LOGIKA NAVIGASI DENGAN DEBOUNCE / LOCK
-    // ==========================================
+    // Navigasi & Active Indicator Locking Logic
     const navItems = document.querySelectorAll(".nav-item");
     const menuToggle = document.getElementById("menuToggle");
     const navLinks = document.getElementById("navLinks");
-    let isClickScrolling = false; // Flag status klik
+    let isClickScrolling = false;
 
     function setActiveLink(id) {
       navItems.forEach((item) => {
@@ -689,7 +762,6 @@
       });
     }
 
-    // IntersectionObserver untuk Scroll Manual biasa
     const sections = document.querySelectorAll("section");
     const observerOptions = {
       root: null,
@@ -698,7 +770,6 @@
     };
 
     const observer = new IntersectionObserver((entries) => {
-      // Jika halaman sedang otomatis ter-scroll karena diklik, abaikan observer
       if (isClickScrolling) return;
 
       entries.forEach((entry) => {
@@ -710,7 +781,6 @@
 
     sections.forEach((section) => observer.observe(section));
 
-    // Deteksi khusus jika layar di-scroll manual sampai paling bawah
     window.addEventListener("scroll", () => {
       if (isClickScrolling) return;
       if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 50) {
@@ -718,18 +788,12 @@
       }
     });
 
-    // Menangani Event Klik Navigasi (Mengunci Indicator)
     navItems.forEach((item) => {
       item.addEventListener("click", (e) => {
         const targetId = item.getAttribute("href").replace("#", "");
-        
-        // Langsung pindahkan indikator ke item yang baru saja diklik
         setActiveLink(targetId);
         
-        // Kunci pemicu observer selama durasi smooth scroll
         isClickScrolling = true;
-        
-        // Lepas kunci setelah smooth scroll selesai
         setTimeout(() => {
           isClickScrolling = false;
         }, 800);
